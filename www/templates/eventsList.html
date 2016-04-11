@@ -1,0 +1,21 @@
+<ion-view title="Events" id="page2">
+	<ion-nav-buttons side="right">
+        <button class="button icon ion-search" ui-sref="searchEvent"></button>
+    </ion-nav-buttons>
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+
+        
+        <ion-list>
+            <ion-item ui-sref="menu.eventDetails">Event 1</ion-item>
+            <ion-item ui-sref="menu.eventDetails">Item 2</ion-item>
+            <ion-item ui-sref="menu.eventDetails">Item 3</ion-item>
+        </ion-list>
+    	
+        <!--
+    	<ion-list>
+        	<ion-item ng-repeat="event in events" ui-sref="menu.eventDetails({id: checkin.id})">{{ event.name }}</ion-item>
+        </ion-list>
+    	-->
+
+    </ion-content>
+</ion-view>
