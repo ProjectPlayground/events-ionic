@@ -1,14 +1,14 @@
-<ion-view title="Login" id="page6">
+<ion-view title="Login" id="page6" name="login-view">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <form class="list">
             <ion-list>
                 <label class="item item-input" name="username">
                     <span class="input-label">Username</span>
-                    <input type="text" placeholder="">
+                    <input type="text" placeholder="" ng-model="data.username">
                 </label>
                 <label class="item item-input" name="password">
                     <span class="input-label">Password</span>
-                    <input type="password" placeholder="">
+                    <input type="password" placeholder="" ng-model="data.password">
                 </label>
             </ion-list>
             <div class="spacer" style="height: 40px;"></div>

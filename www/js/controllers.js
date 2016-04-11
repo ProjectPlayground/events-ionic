@@ -2,6 +2,8 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
   
 .run(function($rootScope, Session){
 	$rootScope.Session = Session;
+
+
 /*
 	$rootScope.events =
   {
@@ -74,7 +76,23 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 //check for blank field and check if username and email exists
 })
    
-.controller('loginCtrl', function($scope) {
+.controller('loginCtrl', function($scope, LoginService, $ionicPopup, $state, $ionicHistory) {
+
+    $scope.data = {};
+ 
+    $scope.login = function() {
+        LoginService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
+        	$ionicHistory.nextViewOptions({
+        		disableBack:true
+        	});
+            $state.go('menu.home');
+        }).error(function(data) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Login failed!',
+                template: 'Please check your credentials!'
+            });
+        });
+    }
 	/*$scope.name     = '';
 	$scope.password = ''
 
