@@ -1,5 +1,23 @@
 angular.module('app.services', [])
 
+//Functions for register table
+.factory('userServices', function($http) {
+    var baseUrl = 'http://fyproject.site88.net/api/'; //api link here
+
+    return {
+
+        //To add user 
+        addService: function (user){
+            return $http.get(baseUrl+'signUp.php?postusername='+user.name+'&postemail='+user.email+'&postpassword='+user.password);
+        },
+
+        //User login 
+        loginService: function (user){
+            return $http.get(baseUrl+'signIn.php?postusername='+user.name+'&postpassword='+user.password);
+        }
+
+    };
+})
 
 .factory('reverseGeocoder', ['$q', '$http', function($q, $http){
 
@@ -73,6 +91,7 @@ angular.module('app.services', [])
 
 
 .factory('Session', function($interval){
+
 	var session = window.localStorage.getItem('session') !== null ?
 		JSON.parse(window.localStorage.getItem('session')) : {checkins: []};
 
@@ -87,7 +106,68 @@ angular.module('app.services', [])
 	}, 300);
 
 	return session;
+
 })
+
+//Functions for track table
+.factory('eventsServices', function($http) {
+
+    return {
+
+    	//get list of events
+        getEvents: function (){
+            return $http.get("http://www.zaimramlan.com/api_kira/getEvents.php").then(function(response){
+				//events = response;
+				console.log(response.data.events_list);
+				return response.data.events_list;
+			});
+		}
+		};
+		/*
+        //To get list of our tracker (Who track us?)
+		    getTracker: function (){
+            return $http.get(baseUrl+'getTracker.php?userId='+userId); 
+        }
+        
+        //To add tracker 
+        addTracker: function (track,register){
+            return $http.get(baseUrl+'addTracker2.php?name1='+userId+'&name2='+register.name);
+        },
+
+        //To delete tracked person
+        deleteTracked: function  (track,register){
+            return $http.get(baseUrl+'deleteTracked2.php?name1='+track.trackerId+'&name2='+register.name);
+        },
+
+        //To delete tracker person
+        deleteTracker: function  (track,register){
+            return $http.get(baseUrl+'deleteTracker2.php?name1='+track.trackedId+'&name2='+register.name);
+        }*/
+
+})
+
+/*
+.factory('eventsServices', function($http){
+
+	return {
+		getEvents: function(){
+			return $http.get("https://www.yoursite.com/users").then(function(response){
+				events = response;
+				return events;
+			});
+		}
+
+		searchEvents: function(){
+			return $http.get("link here").then(function(response){
+				events = response;
+				return events;
+			});
+		}
+
+	}
+
+})
+
 
 .service('LoginService', function($q) {
     return {
@@ -113,7 +193,6 @@ angular.module('app.services', [])
     }
 })
 
-/*
 .factory('LocalStorage', function(){
 	return {
 

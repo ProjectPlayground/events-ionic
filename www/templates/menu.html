@@ -10,15 +10,18 @@
     </ion-side-menu-content>
     <ion-side-menu side="left" id="side-menu21">
         <ion-header-bar class="bar-stable">
-            <div class="title">Menu</div>
+            <div class="title">EventsHuh</div>
         </ion-header-bar>
         <ion-content padding="false" class="side-menu-left has-header">
+
             <ion-list>
-                <ion-item ui-sref="menu.login" menu-close="">Anonymous</ion-item>
+                <ion-item ui-sref="menu.login" menu-close="" ng-if="!isLoggedIn">Log in</ion-item>
+                <ion-item ui-sref="menu.logout" menu-close="" ng-if="">{{ name }}</ion-item>
                 <ion-item ui-sref="menu.home" menu-close="">Home</ion-item>
                 <ion-item ui-sref="menu.eventsList" menu-close="">Events</ion-item>
-                <ion-item ui-sref="menu.checkins" menu-close="">Check in</ion-item>
+                <ion-item ui-sref="menu.checkins" menu-close="" ng-if="isLoggedIn">Check in</ion-item>
             </ion-list>
+
         </ion-content>
     </ion-side-menu>
 </ion-side-menus>

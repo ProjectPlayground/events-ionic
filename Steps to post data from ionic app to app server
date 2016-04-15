@@ -1,0 +1,5 @@
+Post data from ionic app to app server
+
+-Upload the PHP/api.php file to your server
+-In the www/js/app.js file adjust the link variable to point to your server
+-Run ionic serve

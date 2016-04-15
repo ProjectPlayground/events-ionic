@@ -11,23 +11,36 @@
 
         <div id="eventDetails-markdown2" style="color:#000000;">
             <p>Address</p>
+            <p>
+                {{ event.address }}            
+            </p>
         </div>
 
         <div id="eventDetails-markdown3" style="color:#000000;">
             <p>Date and time</p>
+            <p>
+                {{ event.date }}, {{ event.time }}                
+            </p>
         </div>
 
         <div id="eventDetails-markdown4" style="color:#000000;">
             <p>Ticket Price</p>
+            <p>
+                {{ event.ticketprice }}            
+            </p>
         </div>
 
         <div id="eventDetails-markdown5" style="color:#000000;">
             <p>Description</p>
+            <p>
+                {{ event.description }}            
+            </p>
         </div>
 
         <div id="eventDetails-markdown6" style="color:#000000;">
-                <p>Email us</p>
-            </div>
+            <p>Email us</p>
+            <a href="mailto: + '{{ event.email }}'" target="_top">Send Mail</a>
+        </div>
 
     </ion-content>
 </ion-view>

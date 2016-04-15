@@ -37,7 +37,7 @@ angular.module('app.routes', [])
   .state('menu.signup', {
     url: '/signup',
     templateUrl: 'templates/signup.html',
-    controller: 'signupCtrl'
+    controller: 'userCtrl'
   })
 
   .state('menu.login', {
@@ -45,7 +45,17 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/login.html',
-        controller: 'loginCtrl'
+        controller: 'userCtrl'
+      }
+    }
+  })
+
+  .state('menu.logout', {
+    url: '/logout',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/logout.html',
+        controller: 'userCtrl'
       }
     }
   })
