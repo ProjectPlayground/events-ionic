@@ -199,11 +199,11 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 
 
 
-.controller('eventsListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, eventsServices) {
+.controller('eventsListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, EventsAPI) {
 	$rootScope.showLoading();
 
 	//load events from db
-	eventsServices.loadEvents().then(function(response) {
+	EventsAPI.loadEvents().then(function(response) {
 		$rootScope.hideLoading();
 		console.log("Berjaya show events");
 
@@ -222,9 +222,9 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 				update: function (filteredEvents, filterText) {
 
 					$scope.events = filteredEvents;
-					if (filterText) {
-						console.log(filterText);
-					}
+					//if (filterText) {
+					//	console.log(filterText);
+					//}
 
 				}
 			});

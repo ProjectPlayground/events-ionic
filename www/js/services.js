@@ -19,6 +19,34 @@ angular.module('app.services', [])
     };
 })
 
+
+
+//Functions for events table
+.factory('EventsAPI', function($http, $q) {
+	var baseLink = 'http://www.zaimramlan.com/api_kira/'; //link api here
+
+	return {
+		//load events from db
+		loadEvents: function() {
+			var deferred = $q.defer();
+			
+			$http.get(baseLink + 'getEvents.php').then(function(response) {
+				deferred.resolve({
+					events_list: response.data.events_list
+				});
+			}, function(err) {
+				deferred.reject();
+			});
+
+			return deferred.promise;
+		}
+	}
+})
+
+
+
+
+//Functions for checkins
 .factory('reverseGeocoder', ['$q', '$http', function($q, $http){
 
 	function parseAddressFromApiResponse(response) {
@@ -109,23 +137,7 @@ angular.module('app.services', [])
 
 })
 
-//Functions for events table
-.factory('eventsServices', function($http) {
 
-    return {
-
-    	//get list of events
-        getEvents: function (){
-
-            return $http.get("http://www.zaimramlan.com/api_kira/getEvents.php").then(function(response){
-				//events = response;
-				console.log(response.data.events_list);
-				return response.data.events_list;
-			});
-
-		}
-	};
-})
 
 /*
 .factory('LocalStorage', function(){
