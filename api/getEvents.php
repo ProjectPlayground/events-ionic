@@ -7,7 +7,7 @@
     //Importing Database Script 
     require_once('dbConnect.php');
    
-    $sql = "SELECT * FROM events"; //$sql is a variable
+    $sql = "SELECT * FROM eventList"; //$sql is a variable
 
     $events = mysql_query($sql); //use $sql as query statement, insert data into $event
 

@@ -20,7 +20,7 @@
 
 
     //Creating sql query
-    $sql = "SELECT * FROM user WHERE usr_email='$usr_email'
+    $sql = "SELECT * FROM users WHERE usr_email='$usr_email'
     
     ;"; //from usertable
     

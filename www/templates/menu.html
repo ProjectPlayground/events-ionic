@@ -15,13 +15,20 @@
         <ion-content padding="false" class="side-menu-left has-header">
 
             <ion-list>
-                <ion-item ui-sref="menu.login" menu-close="" ng-if="!isLoggedIn">Log in</ion-item>
-                <ion-item ui-sref="menu.logout" menu-close="" ng-if="">{{ name }}</ion-item>
-                <ion-item ui-sref="menu.home" menu-close="">Home</ion-item>
-                <ion-item ui-sref="menu.eventsList" menu-close="">Events</ion-item>
-                <ion-item ui-sref="menu.checkins" menu-close="" ng-if="isLoggedIn">Check in</ion-item>
+                <ion-item ui-sref="menu.login"  ui-sref-active="active" menu-close="" ng-if="!isLoggedIn"><i class="icon ion-ios-person"></i>   Log in</ion-item>
+
+                <ion-item ui-sref="menu.logout" menu-close="" ng-if="isLoggedIn"><i ng-if="isLoggedIn" class="icon ion-ios-person"></i>{{ name }}</ion-item>
+
+                <ion-item ui-sref="menu.home"  ui-sref-active="active" menu-close=""><i class="icon ion-home" ></i>  Home</ion-item>
+
+                <ion-item ui-sref="menu.eventsList"  ui-sref-active="active" menu-close=""><i class="icon ion-briefcase"></i>  Events</ion-item>
+                
+                <ion-item ui-sref="menu.checkins" ui-sref-active="active"menu-close=""><i class="icon ion-location"></i>   Check in</ion-item>
+                <!--<ion-item ui-sref="menu.checkins" menu-close="" ng-if="isLoggedIn"><i class="icon ion-location"></i>     Check in</ion-item>-->
             </ion-list>
 
         </ion-content>
     </ion-side-menu>
 </ion-side-menus>
+
+

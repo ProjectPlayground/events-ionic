@@ -12,8 +12,14 @@
     
     <ion-content ng-init="loadEvents()" overflow-scroll="true" padding="true" class="has-header">
         
-    	<ion-list>
-        	<ion-item ng-repeat="event in events" ui-sref="menu.eventDetails({id: event.id})">{{ event.name }}</ion-item>
+    	<ion-list ng-repeat="event in events">
+        	<ion-item ui-sref="menu.eventDetails({id: event.id})">
+                <h2>{{ event.eventName }}</h2>
+                <p>
+                    {{ event.venue }}
+                    {{ event.description }}
+                </p>
+            </ion-item>
         </ion-list>
 
     </ion-content>

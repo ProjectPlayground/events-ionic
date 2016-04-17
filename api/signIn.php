@@ -11,7 +11,7 @@
 	$username = $_GET['postusername'];
 	$usr_password = $_GET['postpassword'];
 	
-	$sql = "SELECT * FROM user WHERE username='$username' AND usr_password='$usr_password'";
+	$sql = "SELECT * FROM users WHERE username='$username' AND usr_password='$usr_password'";
 
 	$users = mysqli_query($con, $sql);
 	$no = mysqli_num_rows($users);
