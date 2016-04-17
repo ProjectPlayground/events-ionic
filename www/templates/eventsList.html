@@ -1,7 +1,15 @@
 <ion-view title="Events" id="page2">
+	
+	<!--<ion-nav-bar class="bar-stable">
+        <ion-nav-buttons side="secondary">-->
+
 	<ion-nav-buttons side="right">
-        <button class="button icon ion-search" ng-click="searchEvent"></button>
+        <button class="button icon ion-search" ng-click="showFilterBar()"></button>
     </ion-nav-buttons>
+
+    <!--</ion-nav-buttons>
+    </ion-nav-bar>-->
+    
     <ion-content ng-init="loadEvents()" overflow-scroll="true" padding="true" class="has-header">
         
     	<ion-list>

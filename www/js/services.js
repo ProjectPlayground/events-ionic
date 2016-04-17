@@ -109,90 +109,25 @@ angular.module('app.services', [])
 
 })
 
-//Functions for track table
+//Functions for events table
 .factory('eventsServices', function($http) {
 
     return {
 
     	//get list of events
         getEvents: function (){
+
             return $http.get("http://www.zaimramlan.com/api_kira/getEvents.php").then(function(response){
 				//events = response;
 				console.log(response.data.events_list);
 				return response.data.events_list;
 			});
+
 		}
-		};
-		/*
-        //To get list of our tracker (Who track us?)
-		    getTracker: function (){
-            return $http.get(baseUrl+'getTracker.php?userId='+userId); 
-        }
-        
-        //To add tracker 
-        addTracker: function (track,register){
-            return $http.get(baseUrl+'addTracker2.php?name1='+userId+'&name2='+register.name);
-        },
-
-        //To delete tracked person
-        deleteTracked: function  (track,register){
-            return $http.get(baseUrl+'deleteTracked2.php?name1='+track.trackerId+'&name2='+register.name);
-        },
-
-        //To delete tracker person
-        deleteTracker: function  (track,register){
-            return $http.get(baseUrl+'deleteTracker2.php?name1='+track.trackedId+'&name2='+register.name);
-        }*/
-
+	};
 })
 
 /*
-.factory('eventsServices', function($http){
-
-	return {
-		getEvents: function(){
-			return $http.get("https://www.yoursite.com/users").then(function(response){
-				events = response;
-				return events;
-			});
-		}
-
-		searchEvents: function(){
-			return $http.get("link here").then(function(response){
-				events = response;
-				return events;
-			});
-		}
-
-	}
-
-})
-
-
-.service('LoginService', function($q) {
-    return {
-        loginUser: function(name, pw) {
-            var deferred = $q.defer();
-            var promise = deferred.promise;
- 
-            if (name == 'user' && pw == 'secret') {
-                deferred.resolve('Welcome ' + name + '!');
-            } else {
-                deferred.reject('Wrong credentials.');
-            }
-            promise.success = function(fn) {
-                promise.then(fn);
-                return promise;
-            }
-            promise.error = function(fn) {
-                promise.then(null, fn);
-                return promise;
-            }
-            return promise;
-        }
-    }
-})
-
 .factory('LocalStorage', function(){
 	return {
 

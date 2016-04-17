@@ -17,7 +17,9 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 	$rootScope.username = "Anonymous";
 	$rootScope.password = "";	
 */
-})
+})//end run 
+
+
 
 .controller('homeCtrl', function($scope, $state, $cordovaGeolocation) {
 
@@ -82,7 +84,8 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 		console.log($scope);*/
 		// check login data, username and password
 	
-})
+})//end homeCtrl
+
 
 
 //To manage user registration
@@ -134,7 +137,6 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
             console.log("Berjaya dapat userId " + $scope.users.userid );
 
 //tak betul lagi
-//user SYahirah
         if (data!=0) {
 
                     localStorage.setItem("loggedIn", 1);
@@ -192,62 +194,57 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 
         //keluar dari system      
         $state.go('menu.home');
-
     }; //end logout
-
 })//end userCtrl
 
-.controller('eventsListCtrl', function($scope, $rootScope, eventsServices) {
 
-//get events from db and show list of available events
-	$scope.loadEvents = function(){
 
-		$rootScope.showLoading();
+.controller('eventsListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, eventsServices) {
+	$rootScope.showLoading();
 
-		eventsServices.getEvents().then(function(data){
+	//load events from db
+	eventsServices.loadEvents().then(function(response) {
+		$rootScope.hideLoading();
+		console.log("Berjaya show events");
 
-			$rootScope.hideLoading();
+	    /* ion-filter-bar begins */
+	    var filterBarInstance;
+		$scope.events = response.events_list;
 
-			$scope.events = data;
-			console.log("Berjaya show events");
+		//filter events
+		$scope.showFilterBar = function () {
+			filterBarInstance = $ionicFilterBar.show({
+	      		/*
+				- do not change 'items' attribute's name. 
+				- the name is fixed with the plugin.
+				*/
+				items: $scope.events,
+				update: function (filteredEvents, filterText) {
 
-		});
+					$scope.events = filteredEvents;
+					if (filterText) {
+						console.log(filterText);
+					}
 
-	};
-
-//search for a specific events
-	$scope.searchEvents = function(){
-
-		$rootScope.showLoading();
-
-		eventsServices.searchEvents().then(function(data){
-
-			$rootScope.hideLoading();
-
-			$scope.events = data;
-			console.log("Berjaya show events");
-
-		});
-
-	};
-
+				}
+			});
+		};
+	    /* ion-filter-bar ends */
+	})//end eventsServices.loadEvents()
 })//end eventsListCtrl
       
+
+
 .controller('eventDetailsCtrl', function($scope, $stateParams) {
-
-
-	
 
 	$scope.event = $scope.events.filter(function(event){
 		return event.id == $stateParams.id;
-
-
 	}).pop();
 	
 	console.log($scope.event); //display details based on id in console
 	console.log($stateParams); //display id in console
 
-})
+})//end eventDetailsCtrl
 
 
 
@@ -294,12 +291,16 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 	if(name==)
 })*/
    
+
+
 .controller('checkinsCtrl', function($scope, $timeout) {
 	$scope.removeCheckin = function(checkin) {
 		console.log(checkin);
 		$scope.Session.checkins.splice($scope.Session.checkins.indexOf(checkin), 1);
 	}
 })
+
+
 
 .controller('getLocationCtrl', function(
 	$scope,
@@ -365,6 +366,8 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 	};
 
 })
+
+
 
 .controller('checkinDetailsCtrl', function($scope, $stateParams) {
     $scope.checkin = $scope.Session.checkins.reduce(function(carry, checkin){
