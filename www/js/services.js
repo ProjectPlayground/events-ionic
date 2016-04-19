@@ -47,6 +47,8 @@ angular.module('app.services', [])
 
 
 //Functions for checkins
+
+/*
 .factory('reverseGeocoder', ['$q', '$http', function($q, $http){
 
 	function parseAddressFromApiResponse(response) {
@@ -93,10 +95,10 @@ angular.module('app.services', [])
 			return deferred.promise;
 		},
 
-		/*
-		contoh async function - contoh dari zulfa
-		refer part bawah untuk tengok cara call dekat dalam controller
-		*/
+		
+		//contoh async function - contoh dari zulfa
+		//refer part bawah untuk tengok cara call dekat dalam controller
+		
 		getAsyncData: function() {
 			var defer = $q.defer();
 			setTimeout(function() {
@@ -116,7 +118,9 @@ angular.module('app.services', [])
 	};
 
 }])
+*/
 
+/*
 
 .factory('Session', function($interval){
 
@@ -136,29 +140,59 @@ angular.module('app.services', [])
 	return session;
 
 })
+*/
 
-
-
-/*
-.factory('LocalStorage', function(){
+.factory('ReverseGeoCoder', function($http, $q){
 	return {
+		get: function(latitude, longitude) {
+			var deferred = $q.defer();
+			$http.get('http://www.mapquestapi.com/geocoding/v1/reverse?key=glZYY2d2Nb7H8aGz2ggDsf7DIKXckzbM&location=' + latitude + ',' + longitude)
+			.then(function(response) {
+		          var addressObject = response.data.results[0].locations[0];
+		          var addressString = 
+		            addressObject.street + ', ' +
+		            addressObject.adminArea6 + ', ' +
+		            addressObject.adminArea5 + ', ' +
+		            addressObject.adminArea3 + ', ' +
+		            addressObject.postalCode + ', ' +
+		            addressObject.adminArea1;
+		          var mapString = addressObject.mapUrl;
 
-		get:function(key, defaults) {
-			var data=localStorage.getItem(key);
+                deferred.resolve({
+		            address: addressString,
+		            map: mapString
+		          });
 
-			if(data) {
-				return JSON.parse(data);//string to object
-			}
-			return defaults; //if null then return defaults
-		},
+		          console.log(addressString, mapString);
+		          // console.log(response);
 
-		set:function(key, data) {
-			localStorage.setItem(key, JSON.stringify(data)); //object to string
-
+			}, function(err) {
+				deferred.reject();
+			});
+			return deferred.promise;
 		}
 	}
 })
-*/
+
+.factory('LocalStorage', function(){
+	return {
+		get: function(key, defaults) {
+			var data = localStorage.getItem(key);
+			if(data) {
+				return JSON.parse(data);
+			}
+
+			return defaults;
+		},
+		set: function(key, data) {
+			localStorage.setItem(key, JSON.stringify(data));
+		},
+		update: function(key, data) {
+			localStorage.setItem(key, JSON.stringify(data));
+		}
+	}
+})
+
 
 .service('BlankService', [function(){
 

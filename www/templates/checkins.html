@@ -2,7 +2,7 @@
     <ion-content overflow-scroll="true" padding="true" class="has-header">
        
          <ion-list>
-            <ion-item ui-sref="menu.checkinDetails({id: checkin.id})" ng-repeat="checkin in Session.checkins">
+            <ion-item ui-sref="menu.checkinDetails({id: checkin.id})" ng-repeat="checkin in checkins">
                 {{checkin.address | limitTo: 50}}
                 <ion-option-button class="button-assertive icon ion-trash-a" ng-click="removeCheckin({id: checkin.id})"></ion-option-button>
             </ion-item>

@@ -9,13 +9,19 @@
             <p>
                 Address:
             </p>
-            <p ng-bind-html="checkin.address | nl2br"></p>
+            <!--<p ng-bind-html="checkin.address | nl2br"></p>-->
+            <p>
+                {{ checkin.address }}            
+            </p>
         </div>
         <div>
             <p>
                 Description:
             </p>
-            <p ng-bind-html="checkin.description | nl2br"></p>
+            <!--<p ng-bind-html="checkin.description | nl2br"></p>-->
+            <p>
+                {{ checkin.descriptions }}            
+            </p>
         </div>
     </ion-content>
 </ion-view>

@@ -1,11 +1,15 @@
-angular.module('app.controllers', ['nl2br', 'uuid'])
+angular.module('app.controllers', [])
   
-.run(function($rootScope, Session, $ionicLoading){
+.run(function($rootScope, $ionicLoading, LocalStorage){
+
+	$rootScope.checkins = LocalStorage.get('checkins', []);
 
 	$rootScope.isLoggedIn=false;
 
-	$rootScope.showLoading = function() { //msg
-    	$ionicLoading.show();
+	$rootScope.showLoading = function(msg) { //msg
+    	$ionicLoading.show({
+    		template: msg
+    	});
   	};
 
   	$rootScope.hideLoading = function(){
@@ -22,7 +26,7 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 
 
 .controller('homeCtrl', function($scope, $state, $cordovaGeolocation) {
-
+/*
 	$cordovaGeolocation.getCurrentPosition({
 
 		timeout: 10000,
@@ -81,15 +85,61 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 	$scope.password   = '';
 
 	$scope.login = function() {
-		console.log($scope);*/
+		console.log($scope);
 		// check login data, username and password
-	
+*/
+	$cordovaGeolocation.getCurrentPosition({
+		timeout: 10000,
+		enableHighAccuracy: true
+	}).then(function(position){
+		var latitude = position.coords.latitude;
+		var longitude = position.coords.longitude;
+
+		var latLng = new google.maps.LatLng(latitude,longitude);
+		var mapOptions = {
+			center: latLng,
+			zoom: 17,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};		
+
+		$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+		google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+			var marker = new google.maps.Marker({
+				map: $scope.map,
+				animation: google.maps.Animation.DROP,
+				position: latLng,
+			});			
+
+			var infoWindow = new google.maps.InfoWindow({
+				content: 'UIA Gombak'
+			});
+
+			google.maps.event.addListener(marker, 'click', function(){
+				infoWindow.open($scope.map, marker);
+			})
+
+			google.maps.event.addListener($scope.map, 'click', function(event){
+				var marker = new google.maps.Marker({
+					position: event.latLng,
+					map: $scope.map,
+					animation: google.maps.Animation.DROP,
+					draggable: true
+				})
+
+				console.log(event.latLng.lat() + " " + event.latLng.lng());
+			})			
+		})
+
+	}, function(error){
+		console.log("could not get location");
+	});
 })//end homeCtrl
 
 
 
 //To manage user registration
-.controller('userCtrl', function($scope, $rootScope, userServices, $ionicPopup, $state, $ionicHistory){
+.controller('userCtrl', function($scope, $rootScope, userServices, $ionicPopup, $state, $ionicHistory, LocalStorage){
     
     $scope.addUser = function(user){
 
@@ -129,19 +179,18 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 
     $scope.loginUser = function(user){
 
-    	$rootScope.showLoading();
+    	$rootScope.showLoading('Welcome');
 
         userServices.loginService(user).success(function(data){
         	$rootScope.hideLoading();
             $scope.users = data;																																																
             console.log("Berjaya dapat userId " + $scope.users.userid );
 
-//tak betul lagi
         if (data!=0) {
 
-                    localStorage.setItem("loggedIn", 1);
-                    localStorage.setItem("userId", $scope.users.userid);//dapatkan dari database
-                    localStorage.setItem("username", $scope.users.name);
+                    LocalStorage.set("loggedIn", 1);
+                    LocalStorage.set("userId", $scope.users.userid);//from db
+                    LocalStorage.set("username", $scope.users.name);
 
                     console.log(data);
                     console.log("userId : ");
@@ -179,7 +228,7 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 
     $scope.logoutUser = function(user) {
               
-        var username =  localStorage.getItem("username");
+        var username =  LocalStorage.get("username");
 
         $rootScope.isLoggedIn=false;
 
@@ -188,9 +237,9 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
             content: 'Bye '+ username + ' :)'
         })
 
-	    localStorage.removeItem("userId");
-        localStorage.removeItem("username");
-        localStorage.setItem("loggedIn", 0);
+	    //LocalStorage.remove("userId");
+        //LocalStorage.remove("username");
+        LocalStorage.set("loggedIn", 0);
 
         //keluar dari system      
         $state.go('menu.home');
@@ -222,9 +271,9 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 				update: function (filteredEvents, filterText) {
 
 					$scope.events = filteredEvents;
-					//if (filterText) {
-					//	console.log(filterText);
-					//}
+					if (filterText) {
+						console.log(filterText);
+					}
 
 				}
 			});
@@ -233,7 +282,6 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 	})//end eventsServices.loadEvents()
 })//end eventsListCtrl
       
-
 
 .controller('eventDetailsCtrl', function($scope, $stateParams) {
 
@@ -292,16 +340,28 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 })*/
    
 
-
+/*
 .controller('checkinsCtrl', function($scope, $timeout) {
 	$scope.removeCheckin = function(checkin) {
 		console.log(checkin);
 		$scope.Session.checkins.splice($scope.Session.checkins.indexOf(checkin), 1);
 	}
 })
+*/
+
+.controller('checkinsCtrl', function($scope, LocalStorage) {
+	$scope.removeCheckin = function(checkin) {
+		if(confirm('Are you sure you want to delete this?')) {
+			var index = $scope.checkins.indexOf(checkin);
+			$scope.checkins.splice(index, 1);
+			LocalStorage.update('checkins', $scope.checkins);
+		}
+	}
+})
 
 
 
+/*
 .controller('getLocationCtrl', function(
 	$scope,
 	$ionicLoading,
@@ -367,8 +427,60 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
 
 })
 
+*/
+
+.controller('getLocationCtrl', function(
+	$scope,
+	$state,
+	LocalStorage,
+	$cordovaGeolocation,
+	ReverseGeoCoder
+	) {
+
+	$cordovaGeolocation.getCurrentPosition({
+		timeout: 20000,
+		maximumAge: 30000,
+		enableHighAccuracy: false,
+	}).then(function(results){
+		console.log(results);
+		$scope.latitude = results.coords.latitude;
+		$scope.longitude = results.coords.longitude;
+		ReverseGeoCoder.get($scope.latitude, $scope.longitude)
+		.then(function(results) {
+			$scope.address = results.address;
+			$scope.maps = results.map;
+		})
+	}, function(){
+		console.log('error');
+	})
+
+	$scope.save = function() {
+		$scope.checkins.push({
+			id: $scope.checkins.length + 1,
+			latitude: $scope.latitude,
+			longitude: $scope.longitude,
+			address: $scope.address,
+			descriptions: $scope.descriptions,
+			maps: $scope.maps
+		});
+		LocalStorage.set('checkins', $scope.checkins);
+		$state.go('menu.checkins');		
+	}
+})
 
 
+   
+.controller('checkinDetailsCtrl', function($scope, $stateParams) {
+	$scope.checkin = $scope.checkins.filter(function(checkin){
+		return checkin.id == $stateParams.id;
+	}).pop();
+})
+
+.controller('settingsCtrl', function($scope) {
+
+})
+
+/*
 .controller('checkinDetailsCtrl', function($scope, $stateParams) {
     $scope.checkin = $scope.Session.checkins.reduce(function(carry, checkin){
 		console.group("carry");
@@ -386,4 +498,4 @@ angular.module('app.controllers', ['nl2br', 'uuid'])
     }, {});
     console.log($scope.checkin, $stateParams);
 })
-
+*/
