@@ -3,6 +3,8 @@ angular.module('app.controllers', [])
 .run(function($rootScope, $ionicLoading, LocalStorage){
 
 	$rootScope.checkins = LocalStorage.get('checkins', []);
+	$rootScope.events;
+	$rootScope.bookmarks;
 
 	$rootScope.isLoggedIn=false;
 
@@ -258,7 +260,7 @@ angular.module('app.controllers', [])
 
 	    /* ion-filter-bar begins */
 	    var filterBarInstance;
-		$scope.events = response.events_list;
+		$rootScope.events = response.events_list;
 
 		//filter events
 		$scope.showFilterBar = function () {
@@ -267,10 +269,10 @@ angular.module('app.controllers', [])
 				- do not change 'items' attribute's name. 
 				- the name is fixed with the plugin.
 				*/
-				items: $scope.events,
+				items: $rootScope.events,
 				update: function (filteredEvents, filterText) {
 
-					$scope.events = filteredEvents;
+					$rootScope.events = filteredEvents;
 					if (filterText) {
 						console.log(filterText);
 					}
@@ -283,19 +285,62 @@ angular.module('app.controllers', [])
 })//end eventsListCtrl
       
 
-.controller('eventDetailsCtrl', function($scope, $stateParams) {
+.controller('eventDetailsCtrl', function($scope, $rootScope,$stateParams) {
 
-	$scope.event = $scope.events.filter(function(event){
-		return event.id == $stateParams.id;
+	$scope.event = $rootScope.events.filter(function(event){ //scope saves an event object which id==parameter id
+		return event.id == $stateParams.id; //filter by id from rootScope.events
 	}).pop();
 	
 	console.log($scope.event); //display details based on id in console
 	console.log($stateParams); //display id in console
 
+	$scope.bookmark = function () {
+
+	};
+
 })//end eventDetailsCtrl
 
 
 
+.controller('bookmarksListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, BookmarksAPI) {
+	$rootScope.showLoading();
+
+	//load events from db
+	EventsAPI.loadBookmarks().then(function(response) {
+		$rootScope.hideLoading();
+		console.log("Berjaya show bookmarks");
+
+	    /* ion-filter-bar begins */
+	    var filterBarInstance;
+		$rootScope.bookmarks = response.bookmarks_list;
+
+		//filter bookmarks
+		$scope.showFilterBar = function () {
+			filterBarInstance = $ionicFilterBar.show({
+	      		/*
+				- do not change 'items' attribute's name. 
+				- the name is fixed with the plugin.
+				*/
+				items: $rootScope.bookmarks,
+				update: function (filteredBookmarks, filterText) {
+
+					$rootScope.bookmarks = filteredBookmarks;
+					if (filterText) {
+						console.log(filterText);
+					}
+
+				}
+			});
+		};
+	    /* ion-filter-bar ends */
+	})//end bookmarksServices.loadBookmarks()
+})//end bookmarksListCtrl
+
+
+
+.controller('settingsCtrl', function($scope) {
+
+})
 /*
 .controller('loginCtrl', function($scope, $rootScope, $ionicPopup, $state, $ionicHistory) {
 

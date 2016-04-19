@@ -46,6 +46,29 @@ angular.module('app.services', [])
 
 
 
+//Functions for bookmarks table
+.factory('BookmarksAPI', function($http, $q) {
+	var baseLink = 'http://www.zaimramlan.com/api_kira/'; //link api here
+
+	return {
+		//load bookmarks from db
+		loadEvents: function() {
+			var deferred = $q.defer();
+			
+			$http.get(baseLink + 'getEvents.php').then(function(response) {
+				deferred.resolve({
+					bookmarks_list: response.data.bookmarks_list
+				});
+			}, function(err) {
+				deferred.reject();
+			});
+
+			return deferred.promise;
+		}
+	}
+})
+
+
 //Functions for checkins
 
 /*

@@ -1,7 +1,10 @@
 <ion-view title="Event details" id="page8">
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
     
-        <h1 id="eventDetails-heading1" style="color:#000000;text-align:center;">Event name</h1>
+    <ion-nav-buttons side="right">
+        <button class="button icon ion-star" ng-click="bookmark()"></button>
+    </ion-nav-buttons>
+
+    <ion-content overflow-scroll="true" padding="true">
 
         <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; background-color: rgb(255, 255, 255);">
             <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
@@ -9,28 +12,36 @@
 
         <!--<img ng-src="{{ checkin.map }}" style="width: 100%;">-->
 
-        <div class="spacer" style="width: 283px; height: 27px;"></div>
+        <div class="spacer" style="width: 283px;"></div>
 
-        <div id="eventDetails-markdown2" style="color:#000000;">
-            <p>Venue</p>
-            <p>
-                {{ event.venue }}            
-            </p>
+        <div class="card" > 
+            <div class="item item-divider">{{ event.name }}</div>
+            <div class="item item-text-wrap" id="eventDetails-markdown2" style="color:#000000;">
+                <p>Venue</p>
+                <p>
+                    {{ event.venue }}            
+                </p>
+            </div>
+
+            <div class="item item-text-wrap" id="eventDetails-markdown3" style="color:#000000;">
+                <p>Date and time</p>
+                <p>
+                    {{ event.date | date:'dd-MM-yyyy' }} {{ event.time }} 
+                </p>
+            </div>
+
+            <div class="item item-text-wrap" id="eventDetails-markdown5" style="color:#000000;">
+                <p>Description</p>
+                <p>
+                    {{ event.description }}            
+                </p>
+            </div>
         </div>
 
-        <div id="eventDetails-markdown3" style="color:#000000;">
-            <p>Date and time</p>
-            <p>
-                {{ event.date | date:'dd-MM-yyyy' }} , {{ event.time }} 
-            </p>
-        </div>
-
-        <div id="eventDetails-markdown5" style="color:#000000;">
-            <p>Description</p>
-            <p>
-                {{ event.description }}            
-            </p>
-        </div>
+        <!--<a id="listing-button1" class="button button-calm button-outline" ng-click="addBookmark()"></i> Bookmark</a>-->
+        <div class="button-bar">
+       <!-- <button class="button icon-left ion-star button-calm" ng-click="bookmark()">Bookmark</button>-->
+        <button class="button button-outline button-calm checkin">Checkin!</button>
 
     </ion-content>
 </ion-view>
