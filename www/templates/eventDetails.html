@@ -1,7 +1,7 @@
 <ion-view title="Event details" id="page8">
     
     <ion-nav-buttons side="right">
-        <button class="button icon ion-star" ng-click="bookmark()"></button>
+        <button class="button icon ion-star" ng-if="isLoggedIn" ng-click="bookmark()"></button>
     </ion-nav-buttons>
 
     <ion-content overflow-scroll="true" padding="true">
@@ -15,7 +15,7 @@
         <div class="spacer" style="width: 283px;"></div>
 
         <div class="card" > 
-            <div class="item item-divider">{{ event.name }}</div>
+            <div class="item item-divider">{{ event.eventName }}</div>
             <div class="item item-text-wrap" id="eventDetails-markdown2" style="color:#000000;">
                 <p>Venue</p>
                 <p>
@@ -26,7 +26,8 @@
             <div class="item item-text-wrap" id="eventDetails-markdown3" style="color:#000000;">
                 <p>Date and time</p>
                 <p>
-                    {{ event.date | date:'dd-MM-yyyy' }} {{ event.time }} 
+                    {{ event.date | date:'dd-MM-yyyy' }}, {{ event.time }} 
+                    <!--{{ event.price | currency:'RM':2 }}-->
                 </p>
             </div>
 
@@ -39,9 +40,10 @@
         </div>
 
         <!--<a id="listing-button1" class="button button-calm button-outline" ng-click="addBookmark()"></i> Bookmark</a>-->
-        <div class="button-bar">
        <!-- <button class="button icon-left ion-star button-calm" ng-click="bookmark()">Bookmark</button>-->
-        <button class="button button-outline button-calm checkin">Checkin!</button>
+        <button ng-if="isLoggedIn" class="button button-outline button-calm button-block checkin">Checkin!</button>
+
+        <div class="spacer" style="width: 283px;height: 15px;"></div>
 
     </ion-content>
 </ion-view>

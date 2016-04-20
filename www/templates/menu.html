@@ -17,13 +17,13 @@
             <ion-list>
                 <ion-item ui-sref="menu.login"  ui-sref-active="active" menu-close="" ng-if="!isLoggedIn"><i class="icon ion-ios-person"></i>   Log in</ion-item>
 
-                <ion-item ui-sref="menu.logout" menu-close="" ng-if="isLoggedIn"><i ng-if="isLoggedIn" class="icon ion-ios-person"></i>{{ name }}</ion-item>
+                <ion-item ui-sref="menu.logout" menu-close="" ng-if="isLoggedIn"><i ng-if="isLoggedIn" class="icon ion-ios-person"></i>   {{ user.name }}</ion-item>
 
                 <ion-item ui-sref="menu.home"  ui-sref-active="active" menu-close=""><i class="icon ion-home" ></i>  Home</ion-item>
 
                 <ion-item ui-sref="menu.eventsList"  ui-sref-active="active" menu-close=""><i class="icon ion-briefcase"></i>  Events</ion-item>
                 
-                <ion-item ui-sref="menu.bookmarksList" ui-sref-active="active" menu-close=""><i class="icon ion-star"></i>     Bookmarks</ion-item>
+                <ion-item ui-sref="menu.bookmarksList" ui-sref-active="active" menu-close=""  ng-if="isLoggedIn"><i class="icon ion-star"></i>     Bookmarks</ion-item>
 
                 <!--<ion-item ui-sref="menu.bookmark" menu-close="" ng-if="isLoggedIn"><i class="icon ion-star"></i>     Bookmarks</ion-item>
 

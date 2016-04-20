@@ -2,14 +2,15 @@
 <?php
 
     //update events in php server
-
     
     $host="localhost"; //replace with database hostname
-    $username="username"; //replace with database username
-    $password="abcdef"; //replace with database password
-    $db_name="db_name"; //replace with database name
-    $con=mysql_connect("$host", "$username", "$password") or die ("cannot connect");
-    mysql_select_db("$db_name") or die ("cannot select DB");
+    $username="zaemuzha_kira"; //replace with database username
+    $password="nopassword"; //replace with database password
+    $db_name="zaemuzha_fypkira"; //replace with database name
+
+    $con=mysql_connect("$host", "$username", "$password")or die("cannot connect");
+
+    mysql_select_db("$db_name")or die("cannot select DB");
     
     //$matric = $_POST['matric'];
     //$mac = $_POST['mac'];

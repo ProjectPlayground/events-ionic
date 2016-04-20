@@ -11,16 +11,23 @@
 
 
     //Getting values
-    $usr_email = $_GET['postemail'];//sendiri punya
-    $username = $_GET['postusername'];
-    $usr_password = $_GET['postpassword'];
+    $email = $_GET['postemail'];//sendiri punya
+    $name = $_GET['postname'];
+    $password = $_GET['postpassword'];
             
-    //Importing our db connection script
-    require_once('dbConnect.php');
+    
+    $host="localhost"; //replace with database hostname
+    $username="zaemuzha_kira"; //replace with database username
+    $password="nopassword"; //replace with database password
+    $db_name="zaemuzha_fypkira"; //replace with database name
+
+    $con=mysql_connect("$host", "$username", "$password")or die("cannot connect");
+
+    mysql_select_db("$db_name")or die("cannot select DB");
 
 
     //Creating sql query
-    $sql = "SELECT * FROM users WHERE usr_email='$usr_email'
+    $sql = "SELECT * FROM users WHERE email='$email'
     
     ;"; //from usertable
     
@@ -59,8 +66,8 @@
         {       
 
             //Creating an sql query
-            $sql = "INSERT INTO user (usr_email,username, usr_password) 
-                    VALUES ('$usr_email','$username','$usr_password')";
+            $sql = "INSERT INTO users (email, name, password) 
+                    VALUES ('$email','$name','$password')";
 
             //Executing query to database
             if(mysqli_query($con, $sql)){

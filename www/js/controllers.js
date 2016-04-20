@@ -2,18 +2,16 @@ angular.module('app.controllers', [])
   
 .run(function($rootScope, $ionicLoading, LocalStorage){
 
-	$rootScope.checkins = LocalStorage.get('checkins', []);
+	//$rootScope.checkins = LocalStorage.get('checkins', []);
+	$rootScope.users;
 	$rootScope.events;
 	$rootScope.bookmarks;
 
 	$rootScope.isLoggedIn=false;
 
-	$rootScope.showLoading = function(msg) { //msg
-    	$ionicLoading.show({
-    		template: msg
-    	});
-  	};
-
+	$rootScope.showLoading = function() { //msg
+    	$ionicLoading.show();
+    }
   	$rootScope.hideLoading = function(){
 		$ionicLoading.hide();
   	};
@@ -146,7 +144,7 @@ angular.module('app.controllers', [])
     $scope.addUser = function(user){
 
         userServices.addService(user).success(function(data){
-            $scope.users = data;
+            $rootScope.users = data;
             console.log("Data " + data);
 
         	if (data == 1) {
@@ -181,30 +179,32 @@ angular.module('app.controllers', [])
 
     $scope.loginUser = function(user){
 
-    	$rootScope.showLoading('Welcome');
+    	$rootScope.showLoading();
 
-        userServices.loginService(user).success(function(data){
+        userServices.loginService(user).then(function(data){ //data is from echo value in signIn.php
         	$rootScope.hideLoading();
-            $scope.users = data;																																																
-            console.log("Berjaya dapat userId " + $scope.users.userid );
+            $rootScope.user = data.users_list[0];																																																
+            // console.log("userId " + $rootScope.users.id );
 
         if (data!=0) {
 
+        			/*
                     LocalStorage.set("loggedIn", 1);
-                    LocalStorage.set("userId", $scope.users.userid);//from db
-                    LocalStorage.set("username", $scope.users.name);
+                    LocalStorage.set("userId", $rootScope.users.id);//from db
+                    LocalStorage.set("username", $rootScope.users.name);
+					*/
 
-                    console.log(data);
+                    // console.log(data);
                     console.log("userId : ");
-                    console.log($scope.users.userid);
+                    console.log($rootScope.user.id);
                     console.log("username : ");
-                    console.log($scope.users.name);
+                    console.log($rootScope.user.name);
 
                     $rootScope.isLoggedIn=true;
 
                     $ionicPopup.alert({
-                      	title: 'Successfully login!',
-                      	content: 'Hi '+ $scope.users.name+ ' :) ' + $scope.users.userid
+                      	title: 'Successfully logged in!',
+                      	content: 'Hi '+ $rootScope.user.name+ '! Welcome :) '
                     })
 
         			$ionicHistory.nextViewOptions({
@@ -216,32 +216,28 @@ angular.module('app.controllers', [])
 
                     }
 
-        else        
+        else        //if data==0
             {
                     $ionicPopup.alert({
-                      title: 'Error weyh betul',
-                      content: 'Hi '+  user.name+ '! Sorry, password tak sama'
-                    })
-                      
+                      title: 'Tak boleh login',
+                      content: 'Hi '+  user.name+ '!'
+                    })                      
             }
             
         });//function data
     };//userlogin
 
-    $scope.logoutUser = function(user) {
-              
-        var username =  LocalStorage.get("username");
-
+    $scope.logoutUser = function(user) { 
         $rootScope.isLoggedIn=false;
 
         $ionicPopup.alert({
-            title: 'Successfully logout!',
-            content: 'Bye '+ username + ' :)'
+            title: 'Successfully logged out!',
+            content: 'Bye :)'
         })
 
 	    //LocalStorage.remove("userId");
         //LocalStorage.remove("username");
-        LocalStorage.set("loggedIn", 0);
+        //LocalStorage.set("loggedIn", 0);
 
         //keluar dari system      
         $state.go('menu.home');
@@ -256,11 +252,11 @@ angular.module('app.controllers', [])
 	//load events from db
 	EventsAPI.loadEvents().then(function(response) {
 		$rootScope.hideLoading();
-		console.log("Berjaya show events");
+		console.log("Yay berjaya show events");
 
 	    /* ion-filter-bar begins */
 	    var filterBarInstance;
-		$rootScope.events = response.events_list;
+		$rootScope.events = response.events_list; //dapat event array
 
 		//filter events
 		$scope.showFilterBar = function () {
@@ -287,15 +283,18 @@ angular.module('app.controllers', [])
 
 .controller('eventDetailsCtrl', function($scope, $rootScope,$stateParams) {
 
+
+	console.log("dah dalam eventDetails");
+
 	$scope.event = $rootScope.events.filter(function(event){ //scope saves an event object which id==parameter id
-		return event.id == $stateParams.id; //filter by id from rootScope.events
+		return event.eventID == $stateParams.eventID; //filter by id from rootScope.events
 	}).pop();
 	
 	console.log($scope.event); //display details based on id in console
-	console.log($stateParams); //display id in console
+	//console.log($stateParams); //display id in console
 
 	$scope.bookmark = function () {
-
+		//$rootScope.user.
 	};
 
 })//end eventDetailsCtrl

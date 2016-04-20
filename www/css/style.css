@@ -1,8 +1,9 @@
 .menu-left ion-content,.menu-left .item-complex .item-content{
-	color: white;
-	background-color: #344146;
+	color: #2C3E50;
+	background-color: #EEEEEE;
 }
 
 ion-list ion-item.active  a {
-    background-color: #1DABB8 !important; 
+	color: #65C6BB !important;
+    background-color: #2C3E50 !important; 
 }

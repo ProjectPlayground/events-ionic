@@ -91,7 +91,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.eventDetails', {
-    url: '/event-details',
+    url: '/event-details/:eventID', //use parameter as in controller
     views: {
       'side-menu21': {
         templateUrl: 'templates/eventDetails.html',

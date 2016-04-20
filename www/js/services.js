@@ -1,24 +1,34 @@
 angular.module('app.services', [])
 
 //Functions for register table
-.factory('userServices', function($http) {
-    var baseUrl = 'http://fyproject.site88.net/api/'; //api link here
+.factory('userServices', function($http, $q) {
+    var baseUrl = 'http://www.zaimramlan.com/api_kira/'; //api link here
 
     return {
 
         //To add user 
         addService: function (user){
-            return $http.get(baseUrl+'signUp.php?postusername='+user.name+'&postemail='+user.email+'&postpassword='+user.password);
+            return $http.get(baseUrl+'signUp.php?postname='+user.name+'&postemail='+user.email+'&postpassword='+user.password);
         },
 
         //User login 
         loginService: function (user){
-            return $http.get(baseUrl+'signIn.php?postusername='+user.name+'&postpassword='+user.password);
+
+            var deferred = $q.defer();
+			
+			$http.get(baseUrl+'signIn.php?postname='+user.name+'&postpassword='+user.password).then(function(response) {
+				deferred.resolve({
+					users_list: response.data.users_list //return event array
+				});
+			}, function(err) {
+				deferred.reject();
+			});
+
+			return deferred.promise;
         }
 
     };
 })
-
 
 
 //Functions for events table
@@ -32,7 +42,7 @@ angular.module('app.services', [])
 			
 			$http.get(baseLink + 'getEvents.php').then(function(response) {
 				deferred.resolve({
-					events_list: response.data.events_list
+					events_list: response.data.events_list //return event array
 				});
 			}, function(err) {
 				deferred.reject();
@@ -47,15 +57,21 @@ angular.module('app.services', [])
 
 
 //Functions for bookmarks table
-.factory('BookmarksAPI', function($http, $q) {
+.factory('bookmarksServices', function($http, $q) {
 	var baseLink = 'http://www.zaimramlan.com/api_kira/'; //link api here
 
 	return {
+
+		//To add bookmark 
+        addBookmark: function (user, event){
+            return $http.get(baseUrl+'getBookmarks.php?postuserid='+user.id+'&posteventid='+event.id);
+        },
+
 		//load bookmarks from db
-		loadEvents: function() {
+		loadBookmark: function() {
 			var deferred = $q.defer();
 			
-			$http.get(baseLink + 'getEvents.php').then(function(response) {
+			$http.get(baseLink + 'getBookmarks.php').then(function(response) {
 				deferred.resolve({
 					bookmarks_list: response.data.bookmarks_list
 				});

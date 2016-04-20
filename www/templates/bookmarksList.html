@@ -1,0 +1,32 @@
+<ion-view title="Bookmarks" id="page2">
+	
+	<!--<ion-nav-bar class="bar-stable">
+        <ion-nav-buttons side="secondary">-->
+
+	<ion-nav-buttons side="right">
+        <button class="button icon ion-search" ng-click="showFilterBar()"></button>
+    </ion-nav-buttons>
+
+    <!--</ion-nav-buttons>
+    </ion-nav-bar>-->
+    
+    <ion-content ng-init="loadBookmarks()" overflow-scroll="true" padding="true" class="has-header">
+        
+    	<ion-list ng-repeat="event in events">
+        	<ion-item ui-sref="menu.eventDetails({eventID: event.eventID})">
+                <!--<h2>{{ event.eventName }}</h2>
+                <p>
+                    {{ event.venue }}
+                    {{ event.description }}
+                </p>-->
+
+                <h2>{{ event.eventName }}</h2>
+                <p>
+                    {{ event.description }}
+                </p>
+
+            </ion-item>
+        </ion-list>
+    
+    </ion-content>
+</ion-view>

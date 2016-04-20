@@ -13,15 +13,15 @@
 
     mysql_select_db("$db_name")or die("cannot select DB");
    
-    $sql = "SELECT * FROM eventList"; //$sql is a variable
+    $sql = "SELECT * FROM bookmarks"; //$sql is a variable
 
-    $events = mysql_query($sql); //use $sql as query statement, insert data into $event
+    $bookmarks = mysql_query($sql); //use $sql as query statement, insert data into $event
 
     $json = array(); //create empty json array
 
-    if(mysql_num_rows($events)){ //if event still has row with data
-        while($row=mysql_fetch_assoc($events)){ //fetch one row data into row
-            $json['events_list'][]=$row;
+    if(mysql_num_rows($bookmarks)){ //if event still has row with data
+        while($row=mysql_fetch_assoc($bookmarks)){ //fetch one row data into row
+            $json['bookmarks_list'][]=$row;
         }
     }
 
