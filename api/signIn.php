@@ -13,12 +13,12 @@
 
 	mysql_select_db("$db_name")or die("cannot select DB");
 
-	$name = $_GET['postname']; //postusername is from link in userServices
-	$password = $_GET['postpassword']; //postpassword is from link in userServices
+	$name = $_GET['name']; //postusername is from link in userServices
+	$password = $_GET['password']; //postpassword is from link in userServices
 	
 	$sql = "SELECT * FROM users WHERE name='$name' AND password='$password'"; //name and password, name of columns in users
 
-	$users = mysqli_query($con, $sql);
+	$users = mysql_query($sql);
 	
 	$json = array(); //create empty json array
 

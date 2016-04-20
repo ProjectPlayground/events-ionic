@@ -32,7 +32,7 @@
     ;"; //from usertable
     
     //getting result 
-    $no = (mysqli_query($con, $sql));
+    $no = mysql_query($sql);
 
     
 //  echo(mysqli_num_rows($no));
@@ -55,7 +55,7 @@
     //echo json_encode($result);
     //echo(mysqli_num_rows($no));
     //$num_rows = $no->num_rows;
-    $no1 = mysqli_num_rows($no);
+    $no1 = mysql_num_rows($no);
     //echo ($no1);
 
         if ($no1 != 0) {
@@ -64,13 +64,12 @@
 
         else
         {       
-
             //Creating an sql query
-            $sql = "INSERT INTO users (email, name, password) 
-                    VALUES ('$email','$name','$password')";
+            $sql = "INSERT INTO users (name, email, password) 
+                    VALUES ('$name','$email','$password')";
 
             //Executing query to database
-            if(mysqli_query($con, $sql)){
+            if(mysql_query($con, $sql)){
                 echo '1';// add user successfully and vv
             }
 
@@ -80,6 +79,6 @@
         }
         
         //Closing the database 
-        mysqli_close($con);
+        mysql_close($con);
     //}
 ?>

@@ -12,10 +12,10 @@
     $con=mysql_connect("$host", "$username", "$password")or die("cannot connect");
 
     mysql_select_db("$db_name")or die("cannot select DB");
-   
-    $sql = "SELECT * FROM bookmarks"; //$sql is a variable
+    
+    $userid = $_GET['userid']; //postusername is from link in userServices
 
-    $bookmarks = mysql_query($sql); //use $sql as query statement, insert data into $event
+    $bookmarks = "SELECT * FROM bookmarks WHERE userid='$userid'";
 
     $json = array(); //create empty json array
 

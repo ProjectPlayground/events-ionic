@@ -8,7 +8,7 @@ angular.module('app.services', [])
 
         //To add user 
         addService: function (user){
-            return $http.get(baseUrl+'signUp.php?postname='+user.name+'&postemail='+user.email+'&postpassword='+user.password);
+            return $http.get(baseUrl+'signUp.php?name='+user.name+'&postemail='+user.email+'&password='+user.password);
         },
 
         //User login 
@@ -16,7 +16,7 @@ angular.module('app.services', [])
 
             var deferred = $q.defer();
 			
-			$http.get(baseUrl+'signIn.php?postname='+user.name+'&postpassword='+user.password).then(function(response) {
+			$http.get(baseUrl+'signIn.php?name='+user.name+'&password='+user.password).then(function(response) {
 				deferred.resolve({
 					users_list: response.data.users_list //return event array
 				});
@@ -58,20 +58,21 @@ angular.module('app.services', [])
 
 //Functions for bookmarks table
 .factory('bookmarksServices', function($http, $q) {
-	var baseLink = 'http://www.zaimramlan.com/api_kira/'; //link api here
+	var baseUrl = 'http://www.zaimramlan.com/api_kira/'; //link api here
 
 	return {
 
 		//To add bookmark 
-        addBookmark: function (user, event){
-            return $http.get(baseUrl+'getBookmarks.php?postuserid='+user.id+'&posteventid='+event.id);
+        createBookmarks: function (user, event){
+        	console.log(user);
+            return $http.get(baseUrl+'createBookmarks.php?userid='+user.id+'&eventid='+event.eventID);
         },
 
 		//load bookmarks from db
-		loadBookmark: function() {
+		showBookmarks: function(user) {
 			var deferred = $q.defer();
 			
-			$http.get(baseLink + 'getBookmarks.php').then(function(response) {
+			$http.get(baseUrl + 'showBookmarks.php?userid='+user.id).then(function(response) {
 				deferred.resolve({
 					bookmarks_list: response.data.bookmarks_list
 				});
@@ -80,7 +81,12 @@ angular.module('app.services', [])
 			});
 
 			return deferred.promise;
-		}
+		},
+
+		//To delete bookmark 
+        deleteBookmarks: function (user, event){
+            return $http.get(baseUrl+'deleteBookmarks.php?userid='+user.id+'&eventid='+event.eventID);
+        }
 	}
 })
 

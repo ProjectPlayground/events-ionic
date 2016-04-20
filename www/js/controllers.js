@@ -1,13 +1,18 @@
 angular.module('app.controllers', [])
   
-.run(function($rootScope, $ionicLoading, LocalStorage){
+.run(function($rootScope, $ionicLoading, LocalStorage, EventsAPI, bookmarksServices){
 
 	//$rootScope.checkins = LocalStorage.get('checkins', []);
 	$rootScope.users;
-	$rootScope.events;
+	// $rootScope.events;
 	$rootScope.bookmarks;
-
+	$rootScope.userbookmarks=[];
 	$rootScope.isLoggedIn=false;
+
+	EventsAPI.loadEvents().then(function(response) {
+		$rootScope.events = response.events_list; //dapat event array
+		console.log("PLSPLSPLS:Events loaded");
+	})
 
 	$rootScope.showLoading = function() { //msg
     	$ionicLoading.show();
@@ -16,6 +21,22 @@ angular.module('app.controllers', [])
 		$ionicLoading.hide();
   	};
 
+  	$rootScope.loadBookmarks=function(){
+  		bookmarksServices.showBookmarks($rootScope.user).then(function(response) {
+
+			console.log("Berjaya show bookmarks");
+			$rootScope.bookmarks = response.bookmarks_list;
+
+			$rootScope.bookmarks.filter(function(bookmark){
+				$rootScope.events.filter(function(event){
+					if(bookmark.eventid==event.eventID){
+						console.log("AKU DAH MASUK. SO?");
+						$rootScope.userbookmarks.push(event);
+					}
+				})
+			})
+		})
+  	}
 	/*$rootScope.Session = Session;
 
 	$rootScope.username = "Anonymous";
@@ -144,14 +165,14 @@ angular.module('app.controllers', [])
     $scope.addUser = function(user){
 
         userServices.addService(user).success(function(data){
-            $rootScope.users = data;
+            $scope.user = data;
             console.log("Data " + data);
 
         	if (data == 1) {
 
             	$ionicPopup.alert({
                 	title: 'Successfully registered!',
-                	content: 'Thank you for your registration '+ user.name+ '. Please login to enter the system :)' 
+                	content: 'Thank you for your registration '+ $scope.user.name+ '. Please login to enter the system :)' 
             	})
 
             	//masuk dlm system      
@@ -162,7 +183,7 @@ angular.module('app.controllers', [])
 
             	$ionicPopup.alert({
                 	title: 'Error',
-                	content: 'Hi '+  user.name+ '! Sorry, the email or username already exist!'
+                	content: 'Hi '+  $scope.user.name+ '! Sorry, the email or username already exist!'
             	})
        		}
         
@@ -183,8 +204,8 @@ angular.module('app.controllers', [])
 
         userServices.loginService(user).then(function(data){ //data is from echo value in signIn.php
         	$rootScope.hideLoading();
+            console.log(data.users_list);
             $rootScope.user = data.users_list[0];																																																
-            // console.log("userId " + $rootScope.users.id );
 
         if (data!=0) {
 
@@ -210,6 +231,8 @@ angular.module('app.controllers', [])
         			$ionicHistory.nextViewOptions({
         				disableBack:true
         			});
+
+        			$rootScope.loadBookmarks();
 
                     //masuk dlm system      
                     $state.go('menu.home');
@@ -281,37 +304,44 @@ angular.module('app.controllers', [])
 })//end eventsListCtrl
       
 
-.controller('eventDetailsCtrl', function($scope, $rootScope,$stateParams) {
-
+.controller('eventDetailsCtrl', function($scope, $rootScope,$stateParams, bookmarksServices, $ionicPopup) {
 
 	console.log("dah dalam eventDetails");
+
+	$rootScope.userbookmarks.filter(function(userbookmark){
+		if(userbookmark.eventID==$stateParams.eventID){
+			$scope.isBookmarked=true;
+		}
+		else{
+			$scope.isBookmarked=false;
+		}
+	})
 
 	$scope.event = $rootScope.events.filter(function(event){ //scope saves an event object which id==parameter id
 		return event.eventID == $stateParams.eventID; //filter by id from rootScope.events
 	}).pop();
 	
-	console.log($scope.event); //display details based on id in console
+	//console.log($scope.event); //display details based on id in console
 	//console.log($stateParams); //display id in console
 
 	$scope.bookmark = function () {
-		//$rootScope.user.
-	};
+		bookmarksServices.createBookmarks($rootScope.user, $scope.event).then(function(){
 
+			$ionicPopup.alert({
+            	title: 'Bookmark',
+            	content: $scope.event.eventName+' added to bookmark'
+        	})
+
+		})
+	}//end $scope.bookmark
 })//end eventDetailsCtrl
 
 
 
-.controller('bookmarksListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, BookmarksAPI) {
-	$rootScope.showLoading();
-
-	//load events from db
-	EventsAPI.loadBookmarks().then(function(response) {
-		$rootScope.hideLoading();
-		console.log("Berjaya show bookmarks");
-
+.controller('bookmarksListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, bookmarksServices) {
+		console.log($rootScope.userbookmarks);
 	    /* ion-filter-bar begins */
 	    var filterBarInstance;
-		$rootScope.bookmarks = response.bookmarks_list;
 
 		//filter bookmarks
 		$scope.showFilterBar = function () {
@@ -332,7 +362,6 @@ angular.module('app.controllers', [])
 			});
 		};
 	    /* ion-filter-bar ends */
-	})//end bookmarksServices.loadBookmarks()
 })//end bookmarksListCtrl
 
 

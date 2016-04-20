@@ -7,3 +7,7 @@ ion-list ion-item.active  a {
 	color: #65C6BB !important;
     background-color: #2C3E50 !important; 
 }
+
+.bookmarked {
+	color:yellow !important;
+}

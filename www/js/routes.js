@@ -110,6 +110,16 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('menu.bookmarkDetails', {
+    url: '/bookmark-details',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/bookmarkDetails.html',
+        controller: 'bookmarkDetailsCtrl'
+      }
+    }
+  })
+
   .state('menu.settings', {
     url: '/settings',
     views: {

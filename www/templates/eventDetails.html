@@ -1,7 +1,8 @@
 <ion-view title="Event details" id="page8">
     
     <ion-nav-buttons side="right">
-        <button class="button icon ion-star" ng-if="isLoggedIn" ng-click="bookmark()"></button>
+        <i class="bookmarked button icon ion-star" ng-if="isLoggedIn && isBookmarked" ng-click="bookmark()"></i>
+        <i class="button icon ion-star" ng-if="isLoggedIn && !isBookmarked" ng-click="bookmark()"></i>
     </ion-nav-buttons>
 
     <ion-content overflow-scroll="true" padding="true">
