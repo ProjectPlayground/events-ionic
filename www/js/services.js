@@ -84,7 +84,9 @@ angular.module('app.services', [])
 
 		//To add bookmark 
         createBookmarks: function (user, event){
-        	console.log(user);
+        	console.log("dalam bookmarksServices");
+        	console.log(user.id);
+        	console.log(event.eventID);
             return $http.get(baseUrl+'createBookmarks.php?userid='+user.id+'&eventid='+event.eventID);
         },
 
