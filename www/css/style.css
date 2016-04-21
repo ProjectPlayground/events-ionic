@@ -1,11 +1,12 @@
 .menu-left ion-content,.menu-left .item-complex .item-content{
 	color: #2C3E50;
-	background-color: #EEEEEE;
+	background-color: #ecf0f1;
 }
 
 ion-list ion-item.active  a {
-	color: #65C6BB !important;
-    background-color: #2C3E50 !important; 
+	color: #FFF !important;
+	/*color: #65C6BB !important;*/
+    background-color: #3FB8AF !important; 
 }
 
 .bookmarked {

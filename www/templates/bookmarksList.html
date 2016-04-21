@@ -10,10 +10,10 @@
     <!--</ion-nav-buttons>
     </ion-nav-bar>-->
     
-    <ion-content ng-init="showBookmarks()" overflow-scroll="true" padding="true" class="has-header">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
         
     	<ion-list ng-repeat="userbookmark in userbookmarks">
-        	<ion-item ui-sref="menu.bookmarkDetails({eventid: userbookmark.eventid})">
+        	<ion-item ui-sref="menu.bookmarkDetails({eventID: userbookmark.eventID})">
 
                 <h2>{{ userbookmark.eventName }}</h2>
                 <!--<p>

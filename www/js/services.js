@@ -26,7 +26,6 @@ angular.module('app.services', [])
 
 			return deferred.promise;
         }
-
     };
 })
 
