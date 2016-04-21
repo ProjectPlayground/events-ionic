@@ -9,6 +9,23 @@ angular.module('app.controllers', [])
 	$rootScope.userbookmarks=[];
 	$rootScope.isLoggedIn=false;
 
+	$rootScope.checkToken = function() {
+		var usertoken = LocalStorage.get("usertoken");
+
+		if(usertoken != null) {
+			/*
+				kalau usertoken ada,
+				set isLoggedIn state kepada true
+				set userdetails daripada localstorages
+			*/
+			$rootScope.isLoggedIn = true;
+			$rootScope.user = LocalStorage.get("loggeduser");
+			console.log("ISLOGIN TRUE WOI!");
+		} else {
+			console.log("ISLOGIN FALSE WOI!");
+		}
+	}
+
 	EventsAPI.loadEvents().then(function(response) {
 		$rootScope.events = response.events_list; //dapat event array
 		console.log("PLSPLSPLS:Events loaded");
@@ -269,6 +286,9 @@ angular.module('app.controllers', [])
         			});
 
         			$rootScope.loadBookmarks();
+        			//set usertoken & userdetails kat localstorage lepas login
+        			LocalStorage.set("usertoken", $rootScope.user.name);
+        			LocalStorage.set("loggeduser", $rootScope.user);
 
                     //masuk dlm system      
                     $state.go('menu.home');
@@ -297,6 +317,10 @@ angular.module('app.controllers', [])
 	    //LocalStorage.remove("userId");
         //LocalStorage.remove("username");
         //LocalStorage.set("loggedIn", 0);
+
+        //clear usertoken & userdetails dari localstorage lepas logout
+        LocalStorage.setItem("usertoken", null);
+		LocalStorage.set("loggeduser", null);
 
         //keluar dari system      
         $state.go('menu.home');
@@ -459,7 +483,7 @@ angular.module('app.controllers', [])
 	$scope.userbookmark = $rootScope.userbookmarks.filter(function(userbookmark){ //scope saves an event object which id==parameter id
 		return userbookmark.eventid == $stateParams.eventID; //filter by id from rootScope.events
 	}).pop();
-	
+
 })//end eventDetailsCtrl
 
 
