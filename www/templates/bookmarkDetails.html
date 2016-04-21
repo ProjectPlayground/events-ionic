@@ -1,0 +1,50 @@
+<ion-view title="Event details" id="page8">
+    
+    <ion-nav-buttons side="right">
+        <i class="bookmarked button icon ion-star" ng-if="isLoggedIn && isBookmarked" ng-click="deleteBookmark(userBookmark)"></i>
+        <i class="button icon ion-star" ng-if="isLoggedIn && !isBookmarked" ng-click="createBookmark(userBookmark)"></i>
+    </ion-nav-buttons>
+
+    <ion-content overflow-scroll="true" padding="true">
+
+        <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; background-color: rgb(255, 255, 255);">
+            <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+        </div>
+
+        <!--<img ng-src="{{ checkin.map }}" style="width: 100%;">-->
+
+        <div class="spacer" style="width: 283px;"></div>
+
+        <div class="card" > 
+            <div class="item item-divider">{{ userbookmark.eventName }}</div>
+            <div class="item item-text-wrap" id="eventDetails-markdown2" style="color:#000000;">
+                <p>Venue</p>
+                <p>
+                    {{ userbookmark.venue }}            
+                </p>
+            </div>
+
+            <div class="item item-text-wrap" id="eventDetails-markdown3" style="color:#000000;">
+                <p>Date and time</p>
+                <p>
+                    {{ userbookmark.date | date:'dd-MM-yyyy' }}, {{ userbookmark.time }} 
+                    <!--{{ event.price | currency:'RM':2 }}-->
+                </p>
+            </div>
+
+            <div class="item item-text-wrap" id="eventDetails-markdown5" style="color:#000000;">
+                <p>Description</p>
+                <p>
+                    {{ userbookmark.description }}            
+                </p>
+            </div>
+        </div>
+
+        <!--<a id="listing-button1" class="button button-calm button-outline" ng-click="addBookmark()"></i> Bookmark</a>-->
+       <!-- <button class="button icon-left ion-star button-calm" ng-click="bookmark()">Bookmark</button>-->
+        <button ng-if="isLoggedIn" class="button button-outline button-calm button-block checkin">Checkin!</button>
+
+        <div class="spacer" style="width: 283px;height: 15px;"></div>
+
+    </ion-content>
+</ion-view>

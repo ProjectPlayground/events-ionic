@@ -111,7 +111,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.bookmarkDetails', {
-    url: '/bookmark-details',
+    url: '/bookmark-details/:eventid',
     views: {
       'side-menu21': {
         templateUrl: 'templates/bookmarkDetails.html',
