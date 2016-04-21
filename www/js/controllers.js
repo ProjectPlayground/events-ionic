@@ -71,9 +71,6 @@ angular.module('app.controllers', [])
   		$rootScope.isBookmarked=false;
 
   		$rootScope.userbookmarks.filter(function(userbookmark){
-  			console.log("userbookmark id: " +userbookmark.eventID);
-  			console.log("event id: " +eventID);
-  			console.log("----------");
 			if(userbookmark.eventID==eventID){
 				$rootScope.isBookmarked=true;
 			}
@@ -81,36 +78,33 @@ angular.module('app.controllers', [])
 		console.log("dah dalam checkBookmarked "+$rootScope.isBookmarked);
   	}
 
-  	
+  	$rootScope.createBookmark = function (event) {
+		console.log("dalam createBookmark");
+		console.log($rootScope.user);
+		console.log(event.eventID);
+		bookmarksServices.createBookmarks($rootScope.user, event).then(function(){
 
- //  	$rootScope.createBookmark = function (eventparam) {
-	// 	bookmarksServices.createBookmarks($rootScope.user, eventparam).then(function(){
+			$ionicPopup.alert({
+            	title: 'Bookmark',
+            	content: event.eventName+' added to bookmark'
+        	})
+        	$rootScope.isBookmarked=true;
+        	$state.go($state.current, {}, {reload:true});
+		})
+	}//end $scope.bookmark
 
-	// 		$ionicPopup.alert({
- //            	title: 'Bookmark',
- //            	content: eventparam.eventName+' added to bookmark'
- //        	})
- //        	$state.go($state.current, {}, {reload:true});
-	// 	})
-	// }//end $scope.bookmark
+	$rootScope.deleteBookmark = function (event) {
+		bookmarksServices.deleteBookmarks($rootScope.user, event).then(function(){
 
-	// $rootScope.deleteBookmark = function (eventparam) {
-	// 	bookmarksServices.deleteBookmarks($rootScope.user, eventparam).then(function(){
+			$ionicPopup.alert({
+            	title: 'Bookmark',
+            	content: event.eventName+' deleted from bookmark'
+        	})
+			$rootScope.isBookmarked=false;
+			$state.go($state.current, {}, {reload:true});
+		})
+	}//end $scope.bookmark
 
-	// 		$ionicPopup.alert({
- //            	title: 'Bookmark',
- //            	content: eventparam.eventName+' deleted from bookmark'
- //        	})
-	// 		$rootScope.isBookmarked=false;
-	// 		$state.go($state.current, {}, {reload:true});
-	// 	})
-	// }//end $scope.bookmark
-
-	/*$rootScope.Session = Session;
-
-	$rootScope.username = "Anonymous";
-	$rootScope.password = "";	
-*/
 })//end run 
 
 
@@ -391,32 +385,34 @@ angular.module('app.controllers', [])
 
 	$rootScope.checkBookmarked($stateParams.eventID);
 
-	$scope.createBookmark = function (event) {
-		console.log("dalam createBookmark");
-		console.log($rootScope.user);
-		console.log(event.eventID);
-		bookmarksServices.createBookmarks($rootScope.user, event).then(function(){
+	// $rootScope.createBookmark(event);
+	// $rootScope.deleteBookmark(event);
+	// $scope.createBookmark = function (event) {
+	// 	console.log("dalam createBookmark");
+	// 	console.log($rootScope.user);
+	// 	console.log(event.eventID);
+	// 	bookmarksServices.createBookmarks($rootScope.user, event).then(function(){
 
-			$ionicPopup.alert({
-            	title: 'Bookmark',
-            	content: event.eventName+' added to bookmark'
-        	})
-        	$rootScope.isBookmarked=true;
-        	$state.go($state.current, {}, {reload:true});
-		})
-	}//end $scope.bookmark
+	// 		$ionicPopup.alert({
+ //            	title: 'Bookmark',
+ //            	content: event.eventName+' added to bookmark'
+ //        	})
+ //        	$rootScope.isBookmarked=true;
+ //        	$state.go($state.current, {}, {reload:true});
+	// 	})
+	// }//end $scope.bookmark
 
-	$scope.deleteBookmark = function (event) {
-		bookmarksServices.deleteBookmarks($rootScope.user, event).then(function(){
+	// $scope.deleteBookmark = function (event) {
+	// 	bookmarksServices.deleteBookmarks($rootScope.user, event).then(function(){
 
-			$ionicPopup.alert({
-            	title: 'Bookmark',
-            	content: event.eventName+' deleted from bookmark'
-        	})
-			$rootScope.isBookmarked=false;
-			$state.go($state.current, {}, {reload:true});
-		})
-	}//end $scope.bookmark
+	// 		$ionicPopup.alert({
+ //            	title: 'Bookmark',
+ //            	content: event.eventName+' deleted from bookmark'
+ //        	})
+	// 		$rootScope.isBookmarked=false;
+	// 		$state.go($state.current, {}, {reload:true});
+	// 	})
+	// }//end $scope.bookmark
 
 	$scope.event = $rootScope.events.filter(function(event){ //scope saves an event object which id==parameter id
 		return event.eventID == $stateParams.eventID; //filter by id from rootScope.events
@@ -465,31 +461,34 @@ angular.module('app.controllers', [])
 
 	$rootScope.checkBookmarked($stateParams.eventID);
 
-	$scope.createBookmark = function (event) {
-		console.log("dalam createBookmark");
-		console.log($rootScope.user);
-		console.log(event.eventID);
-		bookmarksServices.createBookmarks($rootScope.user, event).then(function(){
+	// $rootScope.createBookmark(event);
+	// $rootScope.deleteBookmark(event);
+	
+	// $scope.createBookmark = function (event) {
+	// 	console.log("dalam createBookmark");
+	// 	console.log($rootScope.user);
+	// 	console.log(event.eventID);
+	// 	bookmarksServices.createBookmarks($rootScope.user, event).then(function(){
 
-			$ionicPopup.alert({
-            	title: 'Bookmark',
-            	content: event.eventName+' added to bookmark'
-        	})
-        	$state.go($state.current, {}, {reload:true});
-		})
-	}//end $scope.bookmark
+	// 		$ionicPopup.alert({
+ //            	title: 'Bookmark',
+ //            	content: event.eventName+' added to bookmark'
+ //        	})
+ //        	$state.go($state.current, {}, {reload:true});
+	// 	})
+	// }//end $scope.bookmark
 
-	$scope.deleteBookmark = function (event) {
-		bookmarksServices.deleteBookmarks($rootScope.user, event).then(function(){
+	// $scope.deleteBookmark = function (event) {
+	// 	bookmarksServices.deleteBookmarks($rootScope.user, event).then(function(){
 
-			$ionicPopup.alert({
-            	title: 'Bookmark',
-            	content: event.eventName+' deleted from bookmark'
-        	})
-			$rootScope.isBookmarked=false;
-			$state.go($state.current, {}, {reload:true});
-		})
-	}//end $scope.bookmark
+	// 		$ionicPopup.alert({
+ //            	title: 'Bookmark',
+ //            	content: event.eventName+' deleted from bookmark'
+ //        	})
+	// 		$rootScope.isBookmarked=false;
+	// 		$state.go($state.current, {}, {reload:true});
+	// 	})
+	// }//end $scope.bookmark
 
 	//$rootScope.checkBookmarked($stateParams.eventid);
 
