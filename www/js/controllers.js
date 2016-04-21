@@ -94,6 +94,7 @@ angular.module('app.controllers', [])
 	}//end $scope.bookmark
 
 	$rootScope.deleteBookmark = function (event) {
+		console.log(event);
 		bookmarksServices.deleteBookmarks($rootScope.user, event).then(function(){
 
 			$ionicPopup.alert({
@@ -463,7 +464,7 @@ angular.module('app.controllers', [])
 
 	// $rootScope.createBookmark(event);
 	// $rootScope.deleteBookmark(event);
-	
+
 	// $scope.createBookmark = function (event) {
 	// 	console.log("dalam createBookmark");
 	// 	console.log($rootScope.user);
