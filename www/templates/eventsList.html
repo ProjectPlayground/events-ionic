@@ -12,17 +12,17 @@
     
     <ion-content ng-init="loadEvents()" overflow-scroll="true" padding="true" class="has-header">
         
+        <ion-refresher 
+            on-refresh="doRefresh()"
+            pulling-text="Pull to refresh..."
+            refreshing-icon="ion-load-c">
+        </ion-refresher>
+
     	<ion-list ng-repeat="event in events">
         	<ion-item ui-sref="menu.eventDetails({eventID: event.eventID})">
-                <!--<h2>{{ event.eventName }}</h2>
-                <p>
-                    {{ event.venue }}
-                    {{ event.description }}
-                </p>-->
-
                 <h2>{{ event.eventName }}</h2>
                 <p>
-                    {{ event.description }}
+                    {{ event.date | date:'dd-MM-yyyy' }}, {{ event.time   }} 
                 </p>
 
             </ion-item>

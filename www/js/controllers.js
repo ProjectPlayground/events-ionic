@@ -3,7 +3,7 @@ angular.module('app.controllers', [])
 .run(function($rootScope, $ionicLoading, LocalStorage, userServices, EventsAPI, bookmarksServices, $ionicPopup, $state, $q){
 
 	//$rootScope.checkins = LocalStorage.get('checkins', []);
-	$rootScope.users;
+	$rootScope.users=[];
 	// $rootScope.events;
 	$rootScope.bookmarks;
 	$rootScope.userbookmarks=[];
@@ -20,31 +20,6 @@ angular.module('app.controllers', [])
   	$rootScope.hideLoading = function(){
 		$ionicLoading.hide();
   	};
-
-  	$rootScope.doRefresh = function(){
-  		// $rootScope.loadBookmarks();
-  		// $state.reload();
-  		$rootScope.userbookmarks=[];
-  		bookmarksServices.showBookmarks($rootScope.user)
-  			.then(function(response) {
-
-			console.log("Berjaya show bookmarks");
-			$rootScope.bookmarks = response.bookmarks_list;
-
-			$rootScope.bookmarks.filter(function(bookmark){
-				$rootScope.events.filter(function(event){
-					if(bookmark.eventid==event.eventID){
-						$rootScope.userbookmarks.push(event);
-					}
-				})
-			})
-  			$rootScope.$broadcast('scroll.refreshComplete');
-
-  			$state.go($state.current, {}, {reload:true});
-
-		})
-
-  	}
 
 	$rootScope.checkToken = function() {
 		// amik usertoken dari localstorage
@@ -370,38 +345,51 @@ angular.module('app.controllers', [])
 
 
 
-.controller('eventsListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, EventsAPI) {
+.controller('eventsListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, EventsAPI, $state) {
 	// $rootScope.showLoading();
 
 	//load events from db
 	// EventsAPI.loadEvents().then(function(response) {
 	// 	$rootScope.hideLoading();
-		console.log("Yay berjaya show events");
+	console.log("Yay berjaya show events");
 
-	    /* ion-filter-bar begins */
-	    var filterBarInstance;
-		//$rootScope.events = response.events_list; //dapat event array
+    /* ion-filter-bar begins */
+    var filterBarInstance;
+	//$rootScope.events = response.events_list; //dapat event array
 
-		//filter events
-		$scope.showFilterBar = function () {
-			filterBarInstance = $ionicFilterBar.show({
-	      		/*
-				- do not change 'items' attribute's name. 
-				- the name is fixed with the plugin.
-				*/
-				items: $rootScope.events,
-				update: function (filteredEvents, filterText) {
+	//filter events
+	$scope.showFilterBar = function () {
+		filterBarInstance = $ionicFilterBar.show({
+      		/*
+			- do not change 'items' attribute's name. 
+			- the name is fixed with the plugin.
+			*/
+			items: $rootScope.events,
+			update: function (filteredEvents, filterText) {
 
-					$rootScope.events = filteredEvents;
-					if (filterText) {
-						console.log(filterText);
-					}
-
+				$rootScope.events = filteredEvents;
+				if (filterText) {
+					console.log(filterText);
 				}
-			});
-		};
-	    /* ion-filter-bar ends */
-	// })//end eventsAPI.loadEvents()
+
+			}
+		});
+	};
+    /* ion-filter-bar ends */
+
+    $scope.doRefresh = function(){
+    	$rootScope.events=[];
+
+		EventsAPI.loadEvents()
+		.then(function(response) {
+			$rootScope.events = response.events_list; //dapat event array
+			console.log("PLSPLSPLS:Events loaded");
+
+			$rootScope.$broadcast('scroll.refreshComplete');
+
+			$state.go($state.current, {}, {reload:true});
+		})//end .then
+	}//end doRefresh
 })//end eventsListCtrl
       
 
@@ -451,31 +439,53 @@ angular.module('app.controllers', [])
 
 
 
-.controller('bookmarksListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, bookmarksServices) {
+.controller('bookmarksListCtrl', function($scope, $rootScope, $ionicLoading, $ionicFilterBar, bookmarksServices, $state) {
 	    
-		console.log($rootScope.userbookmarks);
-	    /* ion-filter-bar begins */
-	    var filterBarInstance;
+	console.log($rootScope.userbookmarks);
 
-		//filter bookmarks
-		$scope.showFilterBar = function () {
-			filterBarInstance = $ionicFilterBar.show({
-	      		/*
-				- do not change 'items' attribute's name. 
-				- the name is fixed with the plugin.
-				*/
-				items: $rootScope.bookmarks,
-				update: function (filteredBookmarks, filterText) {
+    /* ion-filter-bar begins */
+    var filterBarInstance;
 
-					$rootScope.bookmarks = filteredBookmarks;
-					if (filterText) {
-						console.log(filterText);
-					}
+	//filter bookmarks
+	$scope.showFilterBar = function () {
+		filterBarInstance = $ionicFilterBar.show({
+      		/*
+			- do not change 'items' attribute's name. 
+			- the name is fixed with the plugin.
+			*/
+			items: $rootScope.userbookmarks,
+			update: function (filteredUserBookmarks, filterText) {
 
+				$rootScope.userbookmarks = filteredUserBookmarks;
+				if (filterText) {
+					console.log(filterText);
 				}
-			});
-		};
-	    /* ion-filter-bar ends */
+
+			}
+		});
+	};
+    /* ion-filter-bar ends */
+
+    $scope.doRefresh = function(){
+
+		$rootScope.userbookmarks=[];
+		bookmarksServices.showBookmarks($rootScope.user)
+		.then(function(response) {
+
+			console.log("Berjaya show bookmarks");
+			$rootScope.bookmarks = response.bookmarks_list;
+
+			$rootScope.bookmarks.filter(function(bookmark){
+				$rootScope.events.filter(function(event){
+					if(bookmark.eventid==event.eventID){
+						$rootScope.userbookmarks.push(event);
+					}
+				})
+			})//end bookmarks filter
+				$rootScope.$broadcast('scroll.refreshComplete');
+				$state.go($state.current, {}, {reload:true});
+		})//end .then
+	}//end doRefresh
 })//end bookmarksListCtrl
 
 
