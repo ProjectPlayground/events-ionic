@@ -15,7 +15,9 @@
     
     $userid = $_GET['userid']; //postusername is from link in userServices
 
-    $bookmarks = "SELECT * FROM bookmarks WHERE userid='$userid'";
+    $sql = "SELECT * FROM bookmarks WHERE userid='$userid'";
+
+    $bookmarks=mysql_query($sql);
 
     $json = array(); //create empty json array
 

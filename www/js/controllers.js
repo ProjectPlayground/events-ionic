@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
   
-.run(function($rootScope, $ionicLoading, LocalStorage, userServices, EventsAPI, bookmarksServices, $ionicPopup, $state){
+.run(function($rootScope, $ionicLoading, LocalStorage, userServices, EventsAPI, bookmarksServices, $ionicPopup, $state, $q){
 
 	//$rootScope.checkins = LocalStorage.get('checkins', []);
 	$rootScope.users;
@@ -20,6 +20,31 @@ angular.module('app.controllers', [])
   	$rootScope.hideLoading = function(){
 		$ionicLoading.hide();
   	};
+
+  	$rootScope.doRefresh = function(){
+  		// $rootScope.loadBookmarks();
+  		// $state.reload();
+  		$rootScope.userbookmarks=[];
+  		bookmarksServices.showBookmarks($rootScope.user)
+  			.then(function(response) {
+
+			console.log("Berjaya show bookmarks");
+			$rootScope.bookmarks = response.bookmarks_list;
+
+			$rootScope.bookmarks.filter(function(bookmark){
+				$rootScope.events.filter(function(event){
+					if(bookmark.eventid==event.eventID){
+						$rootScope.userbookmarks.push(event);
+					}
+				})
+			})
+  			$rootScope.$broadcast('scroll.refreshComplete');
+
+  			$state.go($state.current, {}, {reload:true});
+
+		})
+
+  	}
 
 	$rootScope.checkToken = function() {
 		// amik usertoken dari localstorage
