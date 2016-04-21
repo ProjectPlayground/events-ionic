@@ -1,4 +1,4 @@
-<ion-view title="Bookmarks" id="page2">
+<ion-view title="BOOKMARKS" id="page2">
 	
 	<!--<ion-nav-bar class="bar-stable">
         <ion-nav-buttons side="secondary">-->
@@ -11,7 +11,7 @@
     </ion-nav-bar>-->
     
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-    
+
         <ion-refresher 
             on-refresh="doRefresh()"
             pulling-text="Pull to refresh..."
@@ -20,12 +20,12 @@
 
     	<ion-list ng-repeat="userbookmark in userbookmarks">
         	<ion-item ui-sref="menu.bookmarkDetails({eventID: userbookmark.eventID})">
-
+            <div class="userbookmarkdetails">
                 <h2>{{ userbookmark.eventName }}</h2>
                 <p>
                     {{ userbookmark.date | date:'dd-MM-yyyy' }}, {{ userbookmark.time   }} 
                 </p>
-
+            </div>
             </ion-item>
         </ion-list>
     

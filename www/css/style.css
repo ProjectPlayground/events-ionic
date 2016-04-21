@@ -1,14 +1,66 @@
+.bar {
+    background-color: black !important; 
+    color: #F66F6D !important;
+    font-family: montserrat;
+}
+
+.bar .title.title-left{
+	background-color: black !important; 
+    color: white !important;
+    font-family: montserrat;
+}
+
 .menu-left ion-content,.menu-left .item-complex .item-content{
-	color: #2C3E50;
+	color: #2c3e50;
 	background-color: #ecf0f1;
+	font-family: Caviar Dreams;
 }
 
 ion-list ion-item.active  a {
-	color: #FFF !important;
-	/*color: #65C6BB !important;*/
-    background-color: #3FB8AF !important; 
+	color: #F66F6D !important;
+    background-color: #1C2028 !important; 
+}
+
+.button.button-icon.button-clear.ion-navicon{
+	color: #F66F6D;
+}
+
+.icon{
+	color: #F66F6D;
+}
+
+.button.icon.ion-search{
+	color: #F66F6D;
+	background-color: black !important; 
+}
+
+.button.icon.ion-star{
+	background-color: black !important; 
+}
+
+.button.button-color{
+	color: white;
+	background-color: #F66F6D !important; 
+}
+
+.button.button-calm.button-outline{
+	color: #F66F6D !important;
+	border-color: #F66F6D !important;
 }
 
 .bookmarked {
 	color:yellow !important;
+}
+
+.pane{
+	background-color: #bdc3c7 !important; 
+}
+
+.item.item-divider{
+	color: white !important;
+	background-color: #F66F6D !important; 
+}
+
+.item.item-input, .item{
+	background-color: #ecf0f1 !important; 
 }

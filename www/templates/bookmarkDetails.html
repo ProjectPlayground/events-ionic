@@ -1,7 +1,7 @@
-<ion-view title="Event details" id="page8">
+<ion-view title="EVENT INFO" id="page8">
     
     <ion-nav-buttons side="right">
-        <i class="bookmarked button icon ion-star" ng-if="isLoggedIn && isBookmarked" ng-click="deleteBookmark(userbookmark)"></i>
+        <i class="button icon ion-star bookmarked" ng-if="isLoggedIn && isBookmarked" ng-click="deleteBookmark(userbookmark)"></i>
         <i class="button icon ion-star" ng-if="isLoggedIn && !isBookmarked" ng-click="createBookmark(userbookmark)"></i>
     </ion-nav-buttons>
 
