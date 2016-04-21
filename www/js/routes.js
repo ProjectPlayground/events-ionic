@@ -19,7 +19,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.eventsList', {
-    url: '/eventslist',
+    url: '/events-list',
     views: {
       'side-menu21': {
         templateUrl: 'templates/eventsList.html',
@@ -111,7 +111,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.bookmarkDetails', {
-    url: '/bookmark-details/:eventid',
+    url: '/bookmark-details/:eventID',
     views: {
       'side-menu21': {
         templateUrl: 'templates/bookmarkDetails.html',
