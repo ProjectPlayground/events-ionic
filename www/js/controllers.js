@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
   
-.run(function($rootScope, $ionicLoading, LocalStorage, EventsAPI, bookmarksServices, $ionicPopup, $state){
+.run(function($rootScope, $ionicLoading, LocalStorage, userServices, EventsAPI, bookmarksServices, $ionicPopup, $state){
 
 	//$rootScope.checkins = LocalStorage.get('checkins', []);
 	$rootScope.users;
@@ -8,23 +8,6 @@ angular.module('app.controllers', [])
 	$rootScope.bookmarks;
 	$rootScope.userbookmarks=[];
 	$rootScope.isLoggedIn=false;
-
-	$rootScope.checkToken = function() {
-		var usertoken = LocalStorage.get("usertoken");
-
-		if(usertoken != null) {
-			/*
-				kalau usertoken ada,
-				set isLoggedIn state kepada true
-				set userdetails daripada localstorages
-			*/
-			$rootScope.isLoggedIn = true;
-			$rootScope.user = LocalStorage.get("loggeduser");
-			console.log("ISLOGIN TRUE WOI!");
-		} else {
-			console.log("ISLOGIN FALSE WOI!");
-		}
-	}
 
 	EventsAPI.loadEvents().then(function(response) {
 		$rootScope.events = response.events_list; //dapat event array
@@ -37,6 +20,31 @@ angular.module('app.controllers', [])
   	$rootScope.hideLoading = function(){
 		$ionicLoading.hide();
   	};
+
+	$rootScope.checkToken = function() {
+		// amik usertoken dari localstorage
+		var usertoken = LocalStorage.get("usertoken");
+
+		// kalau ada usertoken
+		if(usertoken != null) {
+			$rootScope.showLoading();
+
+			// amik userdetails dari usertoken
+			userServices.getUserFromTokenService(usertoken).then(function(data){
+				/*
+					bila dah dapat userdetails,
+					set isLoggedIn state kepada true
+					set userdetails daripada dari database guna token
+				*/
+				$rootScope.isLoggedIn = true;
+	            $rootScope.user = data.users_list[0];	
+	        	$rootScope.hideLoading();
+				console.log("ISLOGIN TRUE WOI!");	            		
+			});
+		} else {
+			console.log("ISLOGIN FALSE WOI!");
+		}
+	}  	
 
   // 	$rootScope.checkBookmarked=function($eventID){
   // 		$rootScope.userbookmarks.filter(function(userbookmark){
@@ -258,7 +266,7 @@ angular.module('app.controllers', [])
 
         userServices.loginService(user).then(function(data){ //data is from echo value in signIn.php
         	$rootScope.hideLoading();
-            $rootScope.user = data.users_list[0];																																																
+            $rootScope.user = data.users_list[0];		
 
         if (data!=0) {
 
@@ -286,9 +294,13 @@ angular.module('app.controllers', [])
         			});
 
         			$rootScope.loadBookmarks();
-        			//set usertoken & userdetails kat localstorage lepas login
-        			LocalStorage.set("usertoken", $rootScope.user.name);
-        			LocalStorage.set("loggeduser", $rootScope.user);
+
+		            // generate random number as usertoken
+		            var usertoken = Math.random();
+		            // update token at database
+		            userServices.setTokenService(usertoken, $rootScope.user);        			
+        			//set usertoken kat localstorage lepas login
+        			LocalStorage.set("usertoken", usertoken);
 
                     //masuk dlm system      
                     $state.go('menu.home');
@@ -317,10 +329,12 @@ angular.module('app.controllers', [])
 	    //LocalStorage.remove("userId");
         //LocalStorage.remove("username");
         //LocalStorage.set("loggedIn", 0);
+		$ionicHistory.nextViewOptions({
+			disableBack:true
+		});        
 
         //clear usertoken & userdetails dari localstorage lepas logout
-        LocalStorage.setItem("usertoken", null);
-		LocalStorage.set("loggeduser", null);
+        LocalStorage.set("usertoken", null);
 
         //keluar dari system      
         $state.go('menu.home');

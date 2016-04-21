@@ -25,6 +25,27 @@ angular.module('app.services', [])
 			});
 
 			return deferred.promise;
+        },
+
+        //Set usertoken at database
+        setTokenService: function(token,user){
+            return $http.get(baseUrl+'setToken.php?token='+token+'&userid='+user.id);
+        },
+
+        getUserFromTokenService: function(token){
+
+            var deferred = $q.defer();
+			
+			$http.get(baseUrl+'getUserFromTokenService.php?token='+token).then(function(response) {
+				deferred.resolve({
+					users_list: response.data.users_list //return event array
+				});
+			}, function(err) {
+				deferred.reject();
+			});
+
+			return deferred.promise;
+
         }
     };
 })
